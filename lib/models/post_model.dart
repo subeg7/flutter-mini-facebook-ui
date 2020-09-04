@@ -9,7 +9,7 @@ class Post {
 
   Post.fromJson(json) {
     user = loggedInUser;  
-    images = json["images"];
+    images = json["images"].length > 0  ? json["images"] : [];
     caption = json["caption"];
   }
 }

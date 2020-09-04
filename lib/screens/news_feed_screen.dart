@@ -32,13 +32,6 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                   title: Text("My Facebook"),
                   pinned: true,
                 ),
-                SliverToBoxAdapter(
-                  child: Center(
-                    child: ProfileAvatar(
-                      image: loggedInUser.profileImage,
-                    ),
-                  ),
-                ),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     newsFeedProvider.posts

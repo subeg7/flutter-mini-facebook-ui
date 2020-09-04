@@ -28,6 +28,11 @@ class PostCard extends StatelessWidget {
                     text: post.caption,
                   )
                 : SizedBox(),
+            post.images.isNotEmpty
+                ? ImageContainer(images: post.images)
+                : SizedBox(
+                    height: 10,
+                  ),
           ],
         ),
       ),

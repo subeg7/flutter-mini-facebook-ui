@@ -39,45 +39,48 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
       body: SafeArea(
         child: Consumer<NewsFeed>(
           builder: (BuildContext context, NewsFeed newsFeedProvider, child) {
-            if (newsFeedProvider.isFetchingPage1)
-              return Center(child: CupertinoActivityIndicator());
-            return SmartRefresher(
-              enablePullUp: true,
-              enablePullDown: false,
-              controller: _refreshController,
-              onLoading: _onLoading,
-              footer: ClassicFooter(
-                loadStyle: LoadStyle.ShowWhenLoading,
-                completeDuration: Duration(milliseconds: 500),
-              ),
-              child: CustomScrollView(
-                slivers: [
-                  SliverAppBar(
-                    centerTitle: true,
-                    title: Text("My Facebook"),
-                    pinned: true,
-                  ),
-                  SliverToBoxAdapter(
-                    child: AddNewWidget(
-                      profileImage: loggedInUser.profileImage,
-                    ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      newsFeedProvider.posts
-                          .asMap() //asMap is used to achieve index in currenItem the list
-                          .map(
-                            (index, post) => MapEntry(
-                              index,
-                              PostCard(post: post, index: index),
+            return AnimatedSwitcher(
+              duration: Duration(seconds: 1),
+              child: newsFeedProvider.isFetchingPage1
+                  ? Center(child: CupertinoActivityIndicator())
+                  : SmartRefresher(
+                      enablePullUp: true,
+                      enablePullDown: false,
+                      controller: _refreshController,
+                      onLoading: _onLoading,
+                      footer: ClassicFooter(
+                        loadStyle: LoadStyle.ShowWhenLoading,
+                        completeDuration: Duration(milliseconds: 500),
+                      ),
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverAppBar(
+                            centerTitle: true,
+                            title: Text("My Facebook"),
+                            pinned: true,
+                          ),
+                          SliverToBoxAdapter(
+                            child: AddNewWidget(
+                              profileImage: loggedInUser.profileImage,
                             ),
-                          )
-                          .values
-                          .toList(),
+                          ),
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              newsFeedProvider.posts
+                                  .asMap() //asMap is used to achieve index in currenItem the list
+                                  .map(
+                                    (index, post) => MapEntry(
+                                      index,
+                                      PostCard(post: post, index: index),
+                                    ),
+                                  )
+                                  .values
+                                  .toList(),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
             );
           },
         ),

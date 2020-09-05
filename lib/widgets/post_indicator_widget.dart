@@ -12,7 +12,7 @@ class Indicator extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(6.0),
         child: Text(
-          "${digit + 1}",
+          digit == null ? "" : "${digit + 1}",
           style: TextStyle(color: Colors.white),
         ),
       ),

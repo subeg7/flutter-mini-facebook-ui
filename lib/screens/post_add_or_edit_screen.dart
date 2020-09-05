@@ -40,49 +40,68 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
-      body: SafeArea(
-        child: Consumer<NewsFeed>(
-          builder: (BuildContext context, NewsFeed newsFeedProvider, child) {
-            if (newsFeedProvider.isFetchingPage1)
-              return Center(child: CircularProgressIndicator());
-            return CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  centerTitle: true,
-                  title: Text(
-                    kScreenModeTitleMap[widget.mode.toString()].toUpperCase() +
-                        " post".toUpperCase(),
+      body: WillPopScope(
+        onWillPop: () async {
+          Post editingPost = Post.fromData(textController.text, postImages);
+          if (!_isPostEdited(editingPost))
+            return true; //if post has not been changed then allow to pop
+          else //if
+            return showDialog(
+                  context: context,
+                  builder: (context) => new AlertDialog(
+                    title: new Text(dialogBoxTitle),
+                    content: new Text(dialogBoxSubTitle),
+                    actions: <Widget>[
+                      new FlatButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: new Text('No'),
+                      ),
+                      new FlatButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: new Text('Yes'),
+                      ),
+                    ],
                   ),
-                  pinned: true,
+                ) ??
+                false;
+        },
+        child: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                centerTitle: true,
+                title: Text(
+                  kScreenModeTitleMap[widget.mode.toString()].toUpperCase() +
+                      " post".toUpperCase(),
                 ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildHeader(context),
-                        SizedBox(height: 10),
-                        _buildTextArea(),
-                        postImages.isNotEmpty
-                            ? Container(
-                                color: Colors.white,
-                                child: VerticalImageContainer(postImages,
-                                    isCancelVisible: true,
-                                    onCancelPress: (int imageAT) =>
-                                        setState(() {
-                                          postImages.removeAt(imageAT);
-                                        })),
-                              )
-                            : SizedBox(),
-                        _buildImagePicker(),
-                      ],
-                    ),
+                pinned: true,
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildHeader(context),
+                      SizedBox(height: 10),
+                      _buildTextArea(),
+                      postImages.isNotEmpty
+                          ? Container(
+                              color: Colors.white,
+                              child: VerticalImageContainer(postImages,
+                                  isCancelVisible: true,
+                                  onCancelPress: (int imageAT) => setState(() {
+                                        postImages.removeAt(imageAT);
+                                      })),
+                            )
+                          : SizedBox(),
+                      _buildImagePicker(),
+                    ],
                   ),
                 ),
-              ],
-            );
-          },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -154,7 +173,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
   }
 
   _submitEditedPost(Post post, BuildContext context) {
-    if (_isEditedPostValid(post)) {
+    if (_isPostEdited(post)) {
       NewsFeed feedProvider = Provider.of<NewsFeed>(context, listen: false);
       feedProvider.replace(
         post,
@@ -173,7 +192,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
       return true;
   }
 
-  bool _isEditedPostValid(Post post) {
+  bool _isPostEdited(Post post) {
     if (post ==
         widget
             .post) // '==' operator is overloaded with business logic in Post model
@@ -273,10 +292,5 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
     ByteData byteData = await asset.getByteData();
     Uint8List imageData = byteData.buffer.asUint8List();
     return AppImageModel.fromLocal(imageData);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

@@ -27,7 +27,12 @@ final kSubmitIconData = {
   "ScreenMode.EDIT": Icons.edit,
 };
 
-final kValidationMessage= {
+final kValidationMessage = {
   "ScreenMode.ADD": "Please write something or atleast a image to post",
-  "ScreenMode.EDIT": "Change something first, then it will be reflected on news feed"
+  "ScreenMode.EDIT":
+      "Change something first, then it will be reflected on news feed"
 };
+
+const String dialogBoxTitle = "Go back ? ";
+const String dialogBoxSubTitle =
+    "Your change wont be saved if you leave. Are you sure of going back ? ";

@@ -25,11 +25,19 @@ class MyApp extends StatelessWidget {
 }
 
 class AppTextStyle {
-  static TextStyle userName(BuildContext context) {
+  static TextStyle title(BuildContext context) {
     return Theme.of(context).textTheme.bodyText2.copyWith(
           fontWeight: FontWeight.bold,
           fontSize: 18,
           letterSpacing: -0.5,
+        );
+  }
+
+  static TextStyle subTitle(BuildContext context) {
+    return Theme.of(context).textTheme.bodyText2.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Colors.blueGrey,
+          fontSize: 15,
         );
   }
 }

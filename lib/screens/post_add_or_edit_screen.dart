@@ -14,7 +14,10 @@ import 'package:provider/provider.dart';
 class AddOrEditScreen extends StatefulWidget {
   final Post post;
   final ScreenMode mode;
-  const AddOrEditScreen({Key key, this.post, this.mode}) : super(key: key);
+  final int index;
+
+  const AddOrEditScreen({this.post, this.mode, this.index});
+
   @override
   State<StatefulWidget> createState() => _AddOrEditScreenState();
 }
@@ -28,8 +31,9 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
   @override
   void initState() {
     super.initState();
+    Post tempCopy = Post.fromMap(widget.post.toMap());
+    postImages = tempCopy.appImages;
     textController.text = widget.post.caption;
-    postImages = widget.post.appImages;
   }
 
   @override
@@ -60,7 +64,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                         _buildHeader(context),
                         SizedBox(height: 10),
                         _buildTextArea(),
-                        widget.post.appImages.isNotEmpty
+                        postImages.isNotEmpty
                             ? Container(
                                 color: Colors.white,
                                 child: VerticalImageContainer(postImages,
@@ -97,20 +101,20 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
           Expanded(
             child: Text(
               widget.post.user.name,
-              style: AppTextStyle.userName(context),
+              style: AppTextStyle.title(context),
             ),
           ),
           Card(
             child: FlatButton.icon(
               label: Text(
-                "Save",
+                kSubmitButtonTitle[widget.mode.toString()],
               ),
               icon: Icon(
-                Icons.check,
+                kSubmitIconData[widget.mode.toString()],
                 color: Colors.blue,
               ),
               onPressed: () {
-                _handleSaveButtonClick(
+                _submitByScreenMode(
                   textController.text,
                   postImages,
                   context,
@@ -124,19 +128,66 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
     );
   }
 
-  _handleSaveButtonClick(
+  _submitByScreenMode(
       String text, List<AppImageModel> images, BuildContext context) {
-    Post editedPost = new Post.edited(text, images);
-    if (editedPost == widget.post) {
-      //the '==' operator has been overloaded in model
-      Scaffold.of(context)
-        ..removeCurrentSnackBar()
-        ..showSnackBar(SnackBar(
-          content: Text("First change something to save"),
-        ));
+    Post submittedPost = Post.fromData(text, images);
+    if (widget.mode == ScreenMode.ADD) {
+      _submitNewPost(submittedPost, context);
     } else {
-      print("its saveable");
+      _submitEditedPost(submittedPost, context);
     }
+  }
+
+  _submitNewPost(Post post, BuildContext context) {
+    if (_isNewPostValid(post)) {
+      NewsFeed feedProvider = Provider.of<NewsFeed>(context, listen: false);
+      feedProvider.add(
+        post,
+        widget.index,
+        successCb: () => Navigator.pop(context),
+      );
+    } else {
+      _displayMessage(kValidationMessage[widget.mode.toString()], context);
+    }
+  }
+
+  _submitEditedPost(Post post, BuildContext context) {
+    if (_isEditedPostValid(post)) {
+      NewsFeed feedProvider = Provider.of<NewsFeed>(context, listen: false);
+      feedProvider.replace(
+        post,
+        widget.index,
+        successCb: () => Navigator.pop(context),
+      );
+    } else {
+      _displayMessage(kValidationMessage[widget.mode.toString()], context);
+    }
+  }
+
+  bool _isNewPostValid(Post post) {
+    if (post.caption == null && post.appImages.isEmpty)
+      return false;
+    else
+      return true;
+  }
+
+  bool _isEditedPostValid(Post post) {
+    if (post == widget.post)
+      return false;
+    else
+      return true;
+  }
+
+  _displayMessage(String message, BuildContext context) {
+    Scaffold.of(context)
+      ..removeCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(
+            message,
+          ),
+        ),
+      );
   }
 
   _buildTextArea() {
@@ -147,9 +198,9 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
         keyboardType: TextInputType.multiline,
         maxLines: null,
         decoration: InputDecoration(
-          hintText: "What's on your mind ...", //TODO :: make it dynamic
+          hintText: "What's on your mind ...",
           labelStyle: TextStyle(
-            fontSize: 14, //TODO :: make it global
+            fontSize: 14,
           ),
           contentPadding: EdgeInsets.symmetric(
             vertical: 10.0,
@@ -168,7 +219,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
       color: Colors.white,
       child: FlatButton.icon(
         label: Text(
-          "Add More",
+          postImages.isEmpty ? "Add Photos" : "Add More",
         ),
         icon: Icon(
           Icons.add_a_photo,
@@ -218,5 +269,10 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
     ByteData byteData = await asset.getByteData();
     Uint8List imageData = byteData.buffer.asUint8List();
     return AppImageModel.fromLocal(imageData);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

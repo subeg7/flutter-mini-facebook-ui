@@ -5,13 +5,13 @@ import '../main.dart';
 
 class PostHeader extends StatelessWidget {
   final String profileImage;
-  final String userName;
+  final String title;
   final Function onEditPress;
 
   const PostHeader({
     Key key,
     @required this.profileImage,
-    @required this.userName,
+    @required this.title,
     @required this.onEditPress,
   }) : super(key: key);
 
@@ -27,8 +27,8 @@ class PostHeader extends StatelessWidget {
           const SizedBox(width: 20),
           Expanded(
             child: Text(
-              userName,
-              style: AppTextStyle.userName(context),
+              title,
+              style: AppTextStyle.title(context),
             ),
           ),
           IconButton(

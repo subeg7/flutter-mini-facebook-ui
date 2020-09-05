@@ -21,11 +21,16 @@ class NewsFeed with ChangeNotifier {
     }
   }
 
-  addNewPost(Post post) {
-    //TODO :: add a new post
+  add(Post post, int index, {Function successCb}) {
+    posts.insert(0, post);
+    notifyListeners();
+    successCb();
   }
 
-  editPost(Post post) {
-    //TODO :: edit logic here
+  replace(Post post, int index, {Function successCb}) {
+    posts.replaceRange(
+        index, index + 1, [post]); //start is inclusive but end is exclusive
+    notifyListeners();
+    successCb();
   }
 }

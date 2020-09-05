@@ -25,8 +25,8 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
       body: SafeArea(
         child: Consumer<NewsFeed>(
           builder: (BuildContext context, NewsFeed newsFeedProvider, child) {
-            if(newsFeedProvider.isLoading)
-              return Center(child : CircularProgressIndicator());
+            if (newsFeedProvider.isLoading)
+              return Center(child: CircularProgressIndicator());
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -34,10 +34,22 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                   title: Text("My Facebook"),
                   pinned: true,
                 ),
+                SliverToBoxAdapter(
+                  child: AddNewWidget(
+                    profileImage: loggedInUser.profileImage,
+                  ),
+                ),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     newsFeedProvider.posts
-                        .map((post) => PostCard(post: post))
+                        .asMap()
+                        .map(
+                          (index, post) => MapEntry(
+                            index,
+                            PostCard(post: post, index: index),
+                          ),
+                        )
+                        .values
                         .toList(),
                   ),
                 ),

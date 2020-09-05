@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 
 class PostCard extends StatelessWidget {
   final Post post;
-  const PostCard({Key key, this.post}) : super(key: key);
+  final int index;
+  const PostCard({Key key, this.post, this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class PostCard extends StatelessWidget {
           children: [
             PostHeader(
               profileImage: post.user.profileImage,
-              userName: post.user.name,
+              title: post.user.name,
               onEditPress: _handleOnEditPress,
             ),
             const Divider(color: Colors.black),
@@ -49,6 +50,7 @@ class PostCard extends StatelessWidget {
       ScaleRoute(
         page: AddOrEditScreen(
           post: post,
+          index: index,
           mode: ScreenMode.EDIT,
         ),
       ),

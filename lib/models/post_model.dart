@@ -6,6 +6,10 @@ class Post {
   List<AppImageModel> appImages = [];
   String caption;
 
+  Post() {
+    user = loggedInUser;
+  }
+
   Post.fromJson(json) {
     user = loggedInUser;
     caption = json["caption"];
@@ -20,10 +24,24 @@ class Post {
     }
   }
 
-  Post.edited(caption, images) {
+  Post.fromData(caption, images) {
     this.user = loggedInUser;
-    this.caption = caption;
     this.appImages = images;
+    this.caption = caption;
+    if (this.caption.isEmpty) this.caption = null;
+  }
+
+  toMap() {
+    return {
+      "caption": this.caption,
+      "appImages": this.appImages,
+    };
+  }
+
+  Post.fromMap(map) {
+    user = loggedInUser;
+    caption = map["caption"];
+    appImages = map["appImages"];
   }
 
   //This is operator overloading

@@ -11,15 +11,15 @@ class NewsFeedService {
     );
     return [
       ...posts,
-      ...posts,
-      ...posts,
-      ...posts,
-      ...posts,
-      ...posts,
-      ...posts,
-      ...posts,
-      ...posts,
-      ...posts,
+      // ...posts,
+      // ...posts,
+      // ...posts,
+      // ...posts,
+      // ...posts,
+      // ...posts,
+      // ...posts,
+      // ...posts,
+      // ...posts,
     ];
   }
 }

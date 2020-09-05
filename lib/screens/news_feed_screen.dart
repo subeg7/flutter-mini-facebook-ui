@@ -25,6 +25,8 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
       body: SafeArea(
         child: Consumer<NewsFeed>(
           builder: (BuildContext context, NewsFeed newsFeedProvider, child) {
+            if(newsFeedProvider.isLoading)
+              return Center(child : CircularProgressIndicator());
             return CustomScrollView(
               slivers: [
                 SliverAppBar(

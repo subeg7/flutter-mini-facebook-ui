@@ -1,17 +1,20 @@
 import 'package:facebook/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+
 class PostHeader extends StatelessWidget {
   final String profileImage;
   final String userName;
+  final Function onEditPress;
 
   const PostHeader({
     Key key,
     @required this.profileImage,
     @required this.userName,
+    @required this.onEditPress,
   }) : super(key: key);
 
-  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,14 +26,16 @@ class PostHeader extends StatelessWidget {
           ProfileAvatar(image: profileImage),
           const SizedBox(width: 20),
           Expanded(
-              child: Text(
-            userName,
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 18, letterSpacing: -0.5),
-          )),
+            child: Text(
+              userName,
+              style: AppTextStyle.userName(context),
+            ),
+          ),
           IconButton(
             icon: Icon(Icons.more_vert),
-            onPressed: () {},
+            onPressed: () {
+              onEditPress(context);
+            },
           ),
         ],
       ),

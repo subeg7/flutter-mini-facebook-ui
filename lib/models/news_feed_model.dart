@@ -6,7 +6,7 @@ class NewsFeed with ChangeNotifier {
   List<Post> posts = [];
   NewsFeedService service = new NewsFeedService();
 
-  bool isLoading;
+  bool isLoading = false;
 
   fetchPost({page = 1}) async {
     isLoading = true;

@@ -26,6 +26,7 @@ class PostCard extends StatelessWidget {
               profileImage: post.user.profileImage,
               title: post.user.name,
               onEditPress: _handleOnEditPress,
+              index: index,
             ),
             const Divider(color: Colors.black),
             post.caption != null

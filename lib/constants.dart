@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const kPageLimit = 5;
+
 const String profilePic =
     "https://images.pexels.com/photos/3772510/pexels-photo-3772510.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260";
 const String laptop =

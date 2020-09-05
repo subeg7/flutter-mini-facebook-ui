@@ -1,5 +1,6 @@
 import 'package:facebook/models/app_image_model.dart';
 import 'package:facebook/models/models.dart';
+import 'package:flutter/foundation.dart';
 
 class Post {
   User user;
@@ -31,21 +32,22 @@ class Post {
     if (this.caption.isEmpty) this.caption = null;
   }
 
-  toMap() {
-    return {
-      "caption": this.caption,
-      "appImages": this.appImages,
-    };
-  }
+  // toMap() {
+  //   return {
+  //     "caption": this.caption,
+  //     "appImages": this.appImages,
+  //   };
+  // }
 
-  Post.fromMap(map) {
-    user = loggedInUser;
-    caption = map["caption"];
-    appImages = map["appImages"];
-  }
+  // Post.fromMap(map) {
+  //   user = loggedInUser;
+  //   caption = map["caption"];
+  //   appImages = map["appImages"];
+  // }
 
   //This is operator overloading
   bool operator ==(covariant Post other) {
-    return caption == other.caption && appImages == other.appImages;
+    bool areImageSame = listEquals(appImages, other.appImages);
+    return caption == other.caption && areImageSame;
   }
 }

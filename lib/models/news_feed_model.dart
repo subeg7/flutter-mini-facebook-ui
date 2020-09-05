@@ -5,18 +5,28 @@ import 'package:flutter/material.dart';
 class NewsFeed with ChangeNotifier {
   List<Post> posts = [];
   NewsFeedService service = new NewsFeedService();
+  bool isFetchingPage1 = false;
+  int currentPage = 1;
 
-  bool isLoading = false;
-
-  fetchPost({page = 1}) async {
-    isLoading = true;
+  fetchPost({
+    page = 1,
+    successCb,
+    dataCompleteCb,
+  }) async {
+    if (page == 1) isFetchingPage1 = true;
     notifyListeners();
     try {
-      posts = await service.fetchByPage(page);
-      isLoading = false;
+      List<Post> paginatedPosts = await service.fetchByPage(page);
+      posts = [...posts, ...paginatedPosts];
+      if (page == 1) isFetchingPage1 = false;
+      currentPage = page;
       notifyListeners();
+      if (paginatedPosts.isEmpty)
+        dataCompleteCb();
+      else
+        successCb();
     } catch (err) {
-      isLoading = false;
+      if (page == 1) isFetchingPage1 = false;
       notifyListeners();
     }
   }

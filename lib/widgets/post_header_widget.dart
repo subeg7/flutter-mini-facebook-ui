@@ -7,12 +7,14 @@ class PostHeader extends StatelessWidget {
   final String profileImage;
   final String title;
   final Function onEditPress;
+  final int index;
 
   const PostHeader({
     Key key,
     @required this.profileImage,
     @required this.title,
     @required this.onEditPress,
+    @required this.index,
   }) : super(key: key);
 
   @override
@@ -31,8 +33,9 @@ class PostHeader extends StatelessWidget {
               style: AppTextStyle.title(context),
             ),
           ),
+          Indicator(digit : index),
           IconButton(
-            icon: Icon(Icons.more_vert),
+            icon: Icon(Icons.edit),
             onPressed: () {
               onEditPress(context);
             },

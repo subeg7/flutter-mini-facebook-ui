@@ -25,14 +25,14 @@ class AddOrEditScreen extends StatefulWidget {
 class _AddOrEditScreenState extends State<AddOrEditScreen> {
   TextEditingController textController = new TextEditingController();
 
-  List<AppImageModel> postImages = [];
+  List<AppImageModel> postImages;
   List<Asset> assetImages = List<Asset>();
 
   @override
   void initState() {
     super.initState();
-    Post tempCopy = Post.fromMap(widget.post.toMap());
-    postImages = tempCopy.appImages;
+    postImages = List<AppImageModel>.generate(
+        widget.post.appImages.length, (index) => widget.post.appImages[index]);
     textController.text = widget.post.caption;
   }
 
@@ -43,7 +43,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
       body: SafeArea(
         child: Consumer<NewsFeed>(
           builder: (BuildContext context, NewsFeed newsFeedProvider, child) {
-            if (newsFeedProvider.isLoading)
+            if (newsFeedProvider.isFetchingPage1)
               return Center(child: CircularProgressIndicator());
             return CustomScrollView(
               slivers: [
@@ -104,6 +104,8 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
               style: AppTextStyle.title(context),
             ),
           ),
+          Indicator(digit: widget.index),
+          SizedBox(width: 5),
           Card(
             child: FlatButton.icon(
               label: Text(
@@ -172,7 +174,9 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
   }
 
   bool _isEditedPostValid(Post post) {
-    if (post == widget.post)
+    if (post ==
+        widget
+            .post) // '==' operator is overloaded with business logic in Post model
       return false;
     else
       return true;

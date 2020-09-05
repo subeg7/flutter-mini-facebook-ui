@@ -5,3 +5,4 @@ export './caption_widget.dart';
 export 'grid_image_widget.dart';
 export './vertical_image_widget.dart';
 export './add_new_post_widget.dart';
+export './post_indicator_widget.dart';

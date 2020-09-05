@@ -3,16 +3,11 @@ import 'package:facebook/models/models.dart';
 
 class Post {
   User user;
-  List<String> images; //TODO :: remove this and its usages
-  List<AppImageModel> appImages;
+  List<AppImageModel> appImages = [];
   String caption;
-
-  Post({this.user, this.images, this.caption});
 
   Post.fromJson(json) {
     user = loggedInUser;
-    images =
-        json["images"].length > 0 ? json["images"] : []; //TODO :: remove this
     caption = json["caption"];
     if (json["images"].length > 0) {
       //list.isEmpty cannot be used in if expression
@@ -23,5 +18,16 @@ class Post {
         ),
       );
     }
+  }
+
+  Post.edited(caption, images) {
+    this.user = loggedInUser;
+    this.caption = caption;
+    this.appImages = images;
+  }
+
+  //This is operator overloading
+  bool operator ==(covariant Post other) {
+    return caption == other.caption && appImages == other.appImages;
   }
 }

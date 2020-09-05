@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 class AppImageWidget extends StatelessWidget {
   final bool hasMore;
   final AppImageModel appImage;
+  final double height;
 
-  const AppImageWidget(this.appImage, {Key key, this.hasMore = false})
+  const AppImageWidget(this.appImage,
+      {Key key, this.hasMore = false, this.height})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -17,11 +19,11 @@ class AppImageWidget extends StatelessWidget {
           appImage.type == AppImageType.Network
               ? Image.network(
                   appImage.url,
-                  fit: BoxFit.cover,
+                  height: height,
                 )
               : Image.memory(
                   appImage.path,
-                  fit: BoxFit.cover,
+                  height: height,
                 ),
           hasMore
               ? Container(

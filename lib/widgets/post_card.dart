@@ -32,7 +32,7 @@ class PostCard extends StatelessWidget {
                     text: post.caption,
                   )
                 : SizedBox(),
-            post.images.isNotEmpty
+            post.appImages.isNotEmpty
                 ? GridImage(appImages: post.appImages)
                 : SizedBox(
                     height: 25,

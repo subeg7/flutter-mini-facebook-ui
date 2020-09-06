@@ -32,16 +32,19 @@ class PostPhotoPicker extends StatelessWidget {
     );
   }
 
+  /*
+    triggering MultiImagePicker plugin
+  */
   Future<void> loadAssets() async {
     List<Asset> resultList = List<Asset>();
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: 300,
+        maxImages: 10,
         enableCamera: true,
         cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
         materialOptions: MaterialOptions(
-          actionBarColor: "#abcdef",
-          actionBarTitle: "Example App",
+          actionBarColor: "#1d9ce0",
+          actionBarTitle: "Photos to Post",
           allViewTitle: "All Photos",
           useDetailsView: false,
           selectCircleStrokeColor: "#000000",
@@ -60,6 +63,9 @@ class PostPhotoPicker extends StatelessWidget {
     onImagesSubmit(newAppImages);
   }
 
+  /*
+    converting the data of type Asset into AppImages
+  */
   Future<AppImageModel> _assetToAppImage(asset) async {
     ByteData byteData = await asset.getByteData();
     Uint8List imageData = byteData.buffer.asUint8List();

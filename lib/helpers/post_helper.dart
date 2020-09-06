@@ -3,6 +3,11 @@ import 'package:facebook/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/*
+  showPopDialog is triggered by WillPopScope,
+  it returns true if clicked on no,
+  returns false if clicked on yes,
+*/
 showPopDialog(BuildContext context) {
   return showDialog(
     context: context,
@@ -23,6 +28,14 @@ showPopDialog(BuildContext context) {
   );
 }
 
+/*
+  submitByScreenMode function is the root level submit,
+  first, checks if the post is to be added or edited,
+  second, validates the data according to the add or edit mode,
+
+  if everything okay,
+  triggers the data change that will be displayed on NewsFeedScreen
+*/
 submitByScreenMode(
   String text,
   List<AppImageModel> images,
@@ -56,6 +69,7 @@ _submitNewPost(
   int postIndex,
   ScreenMode currentMode,
 ) {
+  // new created data validation
   if (_isNewPostValid(post)) {
     NewsFeed feedProvider = Provider.of<NewsFeed>(context, listen: false);
     feedProvider.add(
@@ -64,7 +78,7 @@ _submitNewPost(
       successCb: () => Navigator.pop(context),
     );
   } else {
-    _displayMessage(kValidationMessage[currentMode.toString()], context);
+    displayMessage(kValidationMessage[currentMode.toString()], context);
   }
 }
 
@@ -75,6 +89,7 @@ _submitEditedPost(
   ScreenMode currentMode,
   Post originalPost,
 ) {
+  // edited data validation
   if (isPostEdited(post, originalPost)) {
     NewsFeed feedProvider = Provider.of<NewsFeed>(context, listen: false);
     feedProvider.replace(
@@ -83,10 +98,13 @@ _submitEditedPost(
       successCb: () => Navigator.pop(context),
     );
   } else {
-    _displayMessage(kValidationMessage[currentMode.toString()], context);
+    displayMessage(kValidationMessage[currentMode.toString()], context);
   }
 }
 
+/*
+  New data validator function
+*/
 bool _isNewPostValid(Post post) {
   if (post.caption == null && post.appImages.isEmpty)
     return false;
@@ -94,6 +112,11 @@ bool _isNewPostValid(Post post) {
     return true;
 }
 
+/*
+  WARNING : isPostEdited validator function is not private,
+  check is uses before editing
+
+*/
 bool isPostEdited(Post post, Post originalPost) {
   if (post == originalPost) // '==' operator is overloaded in  Post model
     return false;
@@ -101,7 +124,11 @@ bool isPostEdited(Post post, Post originalPost) {
     return true;
 }
 
-_displayMessage(String message, BuildContext context) {
+/*
+  WARNING : make sure displayMessage gets the context with the Scaffold in it,
+  otherwise the snackbar won't be displayed
+*/
+displayMessage(String message, BuildContext context) {
   Scaffold.of(context)
     ..removeCurrentSnackBar()
     ..showSnackBar(

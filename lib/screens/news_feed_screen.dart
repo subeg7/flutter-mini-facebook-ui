@@ -1,3 +1,4 @@
+import 'package:facebook/helpers/post_helper.dart';
 import 'package:facebook/models/models.dart';
 import 'package:facebook/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,19 +17,28 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
+  /*
+    Fetch the first of the paginated data,
+    could be poerformed in initState, just showing the variants here
+   */
   @override
   void afterFirstLayout(BuildContext context) {
-    // fetch the inital posts to render
+    //fetch first page of data at the app boot-up.
     Provider.of<NewsFeed>(context, listen: false).fetchPost(page: 1);
   }
 
+  /*
+    Fetch more data on scroll
+  */
   void _onLoading() async {
     NewsFeed newsProvider = Provider.of<NewsFeed>(context, listen: false);
     int nextPage = newsProvider.currentPage + 1;
     await newsProvider.fetchPost(
       page: nextPage,
-      successCb: () => _refreshController.loadComplete(),
-      dataCompleteCb: () => _refreshController.loadNoData(),
+      successCb: () => _refreshController
+          .loadComplete(), //means this page data has been loaded, allowing to scroll more
+      dataCompleteCb: () => _refreshController
+          .loadNoData(), //_onLoading() is not triggered even if scrolled down
     );
   }
 

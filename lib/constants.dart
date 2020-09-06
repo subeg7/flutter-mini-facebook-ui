@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const kUserName = "Subeg Aryal";
+
 const kPageLimit = 5;
 
 const String profilePic =
@@ -36,3 +38,4 @@ final kValidationMessage = {
 const String dialogBoxTitle = "Go back ? ";
 const String dialogBoxSubTitle =
     "Your change wont be saved if you leave. Are you sure of going back ? ";
+const kBootMessage = "Please scroll to the bottom to see pagination in action";

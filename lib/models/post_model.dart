@@ -11,6 +11,9 @@ class Post {
     user = loggedInUser;
   }
 
+  /*
+    Create post by json data
+  */
   Post.fromJson(json) {
     user = loggedInUser;
     caption = json["caption"];
@@ -25,6 +28,9 @@ class Post {
     }
   }
 
+  /*
+    Create post from data
+  */
   Post.fromData(caption, images) {
     this.user = loggedInUser;
     this.appImages = images;
@@ -32,20 +38,9 @@ class Post {
     if (this.caption.isEmpty) this.caption = null;
   }
 
-  // toMap() {
-  //   return {
-  //     "caption": this.caption,
-  //     "appImages": this.appImages,
-  //   };
-  // }
-
-  // Post.fromMap(map) {
-  //   user = loggedInUser;
-  //   caption = map["caption"];
-  //   appImages = map["appImages"];
-  // }
-
-  //This is operator overloading
+  /* 
+    This is operator overloading 
+  */
   bool operator ==(covariant Post other) {
     bool areImageSame = listEquals(appImages, other.appImages);
     return caption == other.caption && areImageSame;

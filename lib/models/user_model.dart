@@ -9,4 +9,5 @@ class User {
   User(this.name, this.profileImage);
 }
 
-User loggedInUser = new User("Subeg Aryal", profilePic);
+/* Every activity(add and edit) is done by this user */
+User loggedInUser = new User(kUserName, profilePic,);

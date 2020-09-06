@@ -99,7 +99,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
     );
   }
 
-  _handleImages(List<AppImageModel> imgs) {
+  _handleImages(imgs) {
     if (!mounted) return;
     setState(() {
       setState(() {

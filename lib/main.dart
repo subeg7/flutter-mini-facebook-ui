@@ -4,14 +4,21 @@ import 'package:facebook/screens/screens.dart';
 import 'package:facebook/sentry/sentry_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry/sentry.dart';
 
 void main() {
   runZonedGuarded(
     () => runApp(ProviderScope(child: MyApp())),
     (error, stackTrace) async {
-      await sentry.captureException(
-        exception: error,
-        stackTrace: stackTrace,
+      await sentry.capture(
+        event: Event(
+          level: SeverityLevel.info,
+          message: "Unhandled Exception",
+          extra: {
+            'time': "10 32 pm ",
+            'error': error.toString(),
+          },
+        ),
       );
     },
   );

@@ -1,4 +1,5 @@
 import 'package:facebook/helpers/post_helper.dart';
+import 'package:facebook/sentry/sentry_config.dart';
 import 'package:facebook/widgets/photo_picker_widget.dart';
 import 'package:facebook/widgets/text_area_widget.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
@@ -108,14 +109,19 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
     });
   }
 
+  _generateException()async {
+    throw Exception("UnHandled Error");
+}
+
   _handleSubmit(BuildContext context) {
-    submitByScreenMode(
-      textController.text,
-      postImages,
-      context,
-      widget.index,
-      widget.mode,
-      widget.post,
-    );
+    _generateException();
+    // submitByScreenMode(
+    //   textController.text,
+    //   postImages,
+    //   context,
+    //   widget.index,
+    //   widget.mode,
+    //   widget.post,
+    // );
   }
 }

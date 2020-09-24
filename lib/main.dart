@@ -1,29 +1,21 @@
 import 'package:facebook/models/news_feed_model.dart';
 import 'package:facebook/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<NewsFeed>(
-          //Only the provider of NewsFeed model is needed throughout our app
-          create: (context) => NewsFeed(),
-        ),
-      ],
-      child: MaterialApp(
+    return  MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: NewsFeedScreen(), // we begin with the NewsFeedScreen
-      ),
     );
   }
 }

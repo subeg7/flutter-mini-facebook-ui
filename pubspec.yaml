@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^4.3.2+1
+  flutter_riverpod: ^0.11.0
   after_layout: ^1.0.7+2
   multi_image_picker : 
   pull_to_refresh: ^1.6.1

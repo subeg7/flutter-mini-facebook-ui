@@ -1,11 +1,12 @@
-import 'package:facebook/helpers/post_helper.dart';
 import 'package:facebook/models/models.dart';
+import 'package:facebook/providers/change_notifier_providers.dart';
 import 'package:facebook/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:after_layout/after_layout.dart';
+import 'package:flutter_riverpod/all.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 
 class NewsFeedScreen extends StatefulWidget {
   @override
@@ -22,9 +23,9 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
     could be poerformed in initState, just showing the variants here
    */
   @override
-  void afterFirstLayout(BuildContext context) {
-    //fetch first page of data at the app boot-up.
-    Provider.of<NewsFeed>(context, listen: false).fetchPost(
+  void afterFirstLayout(_) {
+    final newsFeed = context.read(newsFeedProvider);
+    newsFeed.fetchPost(
       page: 1,
       successCb: () => print("success"),
       dataCompleteCb: () => print("complete"),
@@ -35,9 +36,10 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
     Fetch more data on scroll
   */
   void _onLoading() async {
-    NewsFeed newsProvider = Provider.of<NewsFeed>(context, listen: false);
-    int nextPage = newsProvider.currentPage + 1;
-    await newsProvider.fetchPost(
+    final newsFeed = context.read(newsFeedProvider);  
+    //  final newsFeed = ProviderReference().watch(newsFeedProvider);
+    int nextPage = newsFeed.currentPage + 1;
+    await newsFeed.fetchPost(
       page: nextPage,
       successCb: () => _refreshController
           .loadComplete(), //means this page data has been loaded, allowing to scroll more
@@ -51,11 +53,12 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
-        child: Consumer<NewsFeed>(
-          builder: (BuildContext context, NewsFeed newsFeedProvider, child) {
+        child: Consumer(
+          builder: (BuildContext context, ScopedReader watch, _) {
+            final newsFeed = watch(newsFeedProvider);
             return AnimatedSwitcher(
               duration: Duration(seconds: 1),
-              child: newsFeedProvider.isFetchingPage1
+              child: newsFeed.isFetchingPage1
                   ? Center(child: CupertinoActivityIndicator())
                   : SmartRefresher(
                       enablePullUp: true,
@@ -80,7 +83,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                           ),
                           SliverList(
                             delegate: SliverChildListDelegate(
-                              newsFeedProvider.posts
+                              newsFeed.posts
                                   .asMap() //asMap is used to achieve index in currenItem the list
                                   .map(
                                     (index, post) => MapEntry(

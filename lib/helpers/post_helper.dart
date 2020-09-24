@@ -1,7 +1,8 @@
 import 'package:facebook/constants.dart';
 import 'package:facebook/models/models.dart';
+import 'package:facebook/providers/change_notifier_providers.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /*
   showPopDialog is triggered by WillPopScope,
@@ -71,8 +72,8 @@ _submitNewPost(
 ) {
   // new created data validation
   if (_isNewPostValid(post)) {
-    NewsFeed feedProvider = Provider.of<NewsFeed>(context, listen: false);
-    feedProvider.add(
+    final newsFeed = context.read(newsFeedProvider);
+    newsFeed.add(
       post,
       postIndex,
       successCb: () => Navigator.pop(context),
@@ -91,8 +92,8 @@ _submitEditedPost(
 ) {
   // edited data validation
   if (isPostEdited(post, originalPost)) {
-    NewsFeed feedProvider = Provider.of<NewsFeed>(context, listen: false);
-    feedProvider.replace(
+    final newsFeed = context.read(newsFeedProvider);
+    newsFeed.replace(
       post,
       postIndex,
       successCb: () => Navigator.pop(context),

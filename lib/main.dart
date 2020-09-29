@@ -10,16 +10,23 @@ void main() {
   runZonedGuarded(
     () => runApp(ProviderScope(child: MyApp())),
     (error, stackTrace) async {
-      await sentry.capture(
-        event: Event(
-          level: SeverityLevel.info,
-          message: "Unhandled Exception",
-          extra: {
-            'time': "10 32 pm ",
-            'error': error.toString(),
-          },
-        ),
-      );
+      try {
+        await sentry.capture(
+          event: Event(
+            level: SeverityLevel.fatal,
+            message: "Major Exception in debug [Please Ignore]",
+            extra: {
+              'time': "10 32 pm ",
+              'error': error.toString(),
+            },
+            exception: error,
+            stackTrace: stackTrace,
+          ),
+        );
+        print("error reporting to sentry succesful");
+      } catch (err) {
+        print("couldn't be sent to sentry");
+      }
     },
   );
 }

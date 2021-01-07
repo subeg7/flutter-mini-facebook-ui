@@ -55,6 +55,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                   title: Text(
                     kScreenModeTitleMap[widget.mode.toString()].toUpperCase() +
                         " post".toUpperCase(),
+                    key: ValueKey("Post-add-or-edit-screen-title"),
                   ),
                   pinned: true,
                 ),
@@ -109,9 +110,9 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
     });
   }
 
-  _generateException()async {
+  _generateException() async {
     throw Exception("UnHandled Error");
-}
+  }
 
   _handleSubmit(BuildContext context) {
     _generateException();

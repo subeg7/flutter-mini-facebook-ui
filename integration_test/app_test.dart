@@ -16,4 +16,21 @@ void main() {
     expect(editButtons.first, findsOneWidget);
   });
 
+  testWidgets(
+      "tapping on edit button should navigate to the edit screen with screen title 'Edit' on top",
+      (WidgetTester tester) async {
+    await tester.pumpWidget(ProviderScope(child: MyApp()));
+    await tester.pumpAndSettle();
+    Finder editButtonsBeforeNavigation = find.byKey(ValueKey("edit-icon"));
+    tester.tap(editButtonsBeforeNavigation.first);
+    await tester.pumpAndSettle();
+    Finder editButtonsAfterNavigation = find.byKey(ValueKey("edit-icon"));
+    expect(editButtonsAfterNavigation.first, findsNothing);
+    Finder screenTititleFinder =
+        find.byKey(ValueKey("Post-add-or-edit-screen-title"));
+    expect(screenTititleFinder.first, findsOneWidget);
+    Text screenTextWidget =
+        screenTititleFinder.evaluate().single.widget as Text;
+    expect(screenTextWidget.data, "EDIT POST");
+  });
 }

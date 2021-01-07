@@ -35,6 +35,7 @@ class PostHeader extends StatelessWidget {
           ),
           Indicator(digit : index),
           IconButton(
+            key : ValueKey("edit-icon"),
             icon: Icon(Icons.edit),
             onPressed: () {
               onEditPress(context);

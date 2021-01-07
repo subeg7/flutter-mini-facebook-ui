@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "85303605090",
+    "firebase_url": "https://fuse-demo-8626d.firebaseio.com",
+    "project_id": "fuse-demo-8626d",
+    "storage_bucket": "fuse-demo-8626d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85303605090:android:340872f1165abfc0be9e3b",
+        "android_client_info": {
+          "package_name": "com.example.facebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85303605090-mnf7kctihkamguhni002vr4h9nf4113j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4-o4oRBSiiHr81TrBdlA2euHS5fTNOcQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85303605090-mnf7kctihkamguhni002vr4h9nf4113j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,21 +1,45 @@
-import 'package:facebook/models/news_feed_model.dart';
+import 'dart:async';
+
 import 'package:facebook/screens/screens.dart';
+import 'package:facebook/sentry/sentry_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry/sentry.dart';
 
 void main() {
-  runApp(ProviderScope(child: MyApp()));
+  runZonedGuarded(
+    () => runApp(ProviderScope(child: MyApp())),
+    (error, stackTrace) async {
+      try {
+        await sentry.capture(
+          event: Event(
+            level: SeverityLevel.fatal,
+            message: "Major Exception in debug [Please Ignore]",
+            extra: {
+              'time': "10 32 pm ",
+              'error': error.toString(),
+            },
+            exception: error,
+            stackTrace: stackTrace,
+          ),
+        );
+        print("error reporting to sentry succesful");
+      } catch (err) {
+        print("couldn't be sent to sentry");
+      }
+    },
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: NewsFeedScreen(), // we begin with the NewsFeedScreen
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: NewsFeedScreen(), // we begin with the NewsFeedScreen
     );
   }
 }

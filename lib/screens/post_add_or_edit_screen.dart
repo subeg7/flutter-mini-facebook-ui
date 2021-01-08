@@ -119,9 +119,7 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
   _handleImages(imgs) {
     if (!mounted) return;
     setState(() {
-      setState(() {
-        postImages = [...postImages, ...imgs];
-      });
+      postImages = [...postImages, ...imgs];
     });
   }
 

@@ -1,3 +1,4 @@
+import 'package:facebook/constants.dart';
 import 'package:facebook/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ void main() {
     await tester.tap(addNewFind);
     await tester.pumpAndSettle();
 
-    //edit the post with NEWTEXT
+    //type in the newText
     final String newText =
         "This is an automated test created on integration testing";
     await tester.enterText(find.byKey(Key("post-text-area")), newText);
@@ -68,6 +69,31 @@ void main() {
     expect(mainScreenTitleWidget.data, "My Facebook");
   });
 
+  testWidgets(
+      "trying to submit without typing anything should not be submitted and snackbar should be shown instead",
+      (WidgetTester tester) async {
+    await _pumpAppAndWait(tester);
+
+    //press create new post
+    Finder addNewFind = find.byKey(Key("whats-on-your-mind-text"));
+    await tester.tap(addNewFind);
+    await tester.pumpAndSettle();
+
+    // await Future.delayed(Duration(seconds: 5), () {});
+
+    //press submit button
+    Finder postSubmitButton = find.byKey(ValueKey("submit-button"));
+    await tester.tap(postSubmitButton);
+    await tester.pumpAndSettle();
+
+    //find snackbar message
+    Finder mainScreenTitleFinder = find.byKey(Key("snackbar-text-message"));
+    Text snackbarText = mainScreenTitleFinder.evaluate().single.widget as Text;
+    expect(snackbarText.data, addValidationMessage);
+
+    
+  });
+
   testWidgets("submitted new post should appear on news feed screen",
       (WidgetTester tester) async {
     await _pumpAppAndWait(tester);
@@ -77,7 +103,7 @@ void main() {
     await tester.tap(addNewFind);
     await tester.pumpAndSettle();
 
-    //edit the post with NEWTEXT
+    //type in the newText
     final String newText =
         "This is an automated test created on integration testing";
     await tester.enterText(find.byKey(Key("post-text-area")), newText);

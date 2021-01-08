@@ -139,6 +139,7 @@ displayMessage(String message, BuildContext context) {
       SnackBar(
         content: Text(
           message,
+          key: Key("snackbar-text-message"),
         ),
       ),
     );

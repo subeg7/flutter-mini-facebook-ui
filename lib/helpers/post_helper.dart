@@ -13,14 +13,17 @@ showPopDialog(BuildContext context) {
   return showDialog(
     context: context,
     builder: (context) => new AlertDialog(
+      key: Key("go-back-alert-dialog"),
       title: new Text(dialogBoxTitle),
       content: new Text(dialogBoxSubTitle),
       actions: <Widget>[
         new FlatButton(
+          key: Key("no-button-on-dialog"),
           onPressed: () => Navigator.of(context).pop(false),
           child: new Text('No'),
         ),
         new FlatButton(
+          key: Key("yes-button-on-dialog"),
           onPressed: () => Navigator.of(context).pop(true),
           child: new Text('Yes'),
         ),

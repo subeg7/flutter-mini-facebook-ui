@@ -1,7 +1,6 @@
 import 'package:facebook/constants.dart';
 import 'package:facebook/main.dart';
 import 'package:facebook/models/models.dart';
-import 'package:facebook/routes/scale_route.dart';
 import 'package:facebook/routes/slide_route.dart';
 import 'package:facebook/screens/screens.dart';
 import 'package:facebook/widgets/widgets.dart';
@@ -44,6 +43,7 @@ class AddNewWidget extends StatelessWidget {
                     ),
                     child: Text(
                       "What's on your mind ? ",
+                      key: Key("whats-on-your-mind-text"),
                       style: AppTextStyle.subTitle(context),
                     ),
                   ),

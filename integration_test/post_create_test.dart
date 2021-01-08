@@ -13,7 +13,7 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets("create button onpress should navigate to ADD POST",
+  testWidgets("create button onpress should navigate to ADD POST screen",
       (WidgetTester tester) async {
     await _pumpAppAndWait(tester);
 
@@ -30,85 +30,81 @@ void main() {
     expect(screenTextWidget.data, "ADD POST");
   });
 
-  // testWidgets(
-  //     "Alert dialog box should appear when pressing back while editing and pressing 'yes' on dialog should bring back to news feed screen",
-  //     (WidgetTester tester) async {
-  //   await _pumpAppAndWait(tester);
-  //   Finder editButtonsBeforeNavigation = find.byKey(ValueKey("edit-icon"));
-  //   await tester.tap(editButtonsBeforeNavigation.first);
-  //   await tester.pumpAndSettle();
+  testWidgets(
+      "Pop up when pressed back without submitting , press yes to go back to navigation screen",
+      (WidgetTester tester) async {
+    await _pumpAppAndWait(tester);
 
-  //   //edit the post with NEWTEXT
-  //   final String editText = "NEW EDIT TEXT FROM INTEGRATION TEST";
-  //   await tester.enterText(find.byKey(Key("post-text-area")), editText);
+    //press create new post
+    Finder addNewFind = find.byKey(Key("whats-on-your-mind-text"));
+    await tester.tap(addNewFind);
+    await tester.pumpAndSettle();
 
-  //   //go back without submitting
-  //   Finder backFinder = find.byKey(ValueKey("back-button"));
-  //   await tester.tap(backFinder);
-  //   await tester.pumpAndSettle();
-  //   // await Future.delayed(Duration(seconds: 5), () {});
+    //edit the post with NEWTEXT
+    final String newText =
+        "This is an automated test created on integration testing";
+    await tester.enterText(find.byKey(Key("post-text-area")), newText);
 
-  //   //find alertdialog box and check error message
-  //   Finder dialogFinder = find.byKey(Key("go-back-alert-dialog"));
-  //   expect(dialogFinder, findsOneWidget);
+    //go back without submitting
+    Finder backFinder = find.byKey(ValueKey("back-button"));
+    await tester.tap(backFinder);
+    await tester.pumpAndSettle();
+    // await Future.delayed(Duration(seconds: 5), () {});
 
-  //   // press yes button on dialog
-  //   Finder yesDialogButton = find.byKey(Key("yes-button-on-dialog"));
-  //   await tester.tap(yesDialogButton);
-  //   await tester.pumpAndSettle();
+    //find alertdialog box and check error message
+    Finder dialogFinder = find.byKey(Key("go-back-alert-dialog"));
+    expect(dialogFinder, findsOneWidget);
 
-  //   //check navigation
-  //   Finder mainScreenTitleFinder =
-  //       find.byKey(ValueKey("News-feed-screen-title-text"));
-  //   Text mainScreenTitleWidget =
-  //       mainScreenTitleFinder.evaluate().single.widget as Text;
-  //   expect(mainScreenTitleWidget.data, "My Facebook");
-  // });
+    // press yes button on dialog
+    Finder yesDialogButton = find.byKey(Key("yes-button-on-dialog"));
+    await tester.tap(yesDialogButton);
+    await tester.pumpAndSettle();
 
-  // testWidgets(
-  //     "Alert dialog box should appear when pressing back while editing and pressing 'no' and then submitting the post should show text on news feed screen",
-  //     (WidgetTester tester) async {
-  //   await _pumpAppAndWait(tester);
+    //check navigation
+    Finder mainScreenTitleFinder =
+        find.byKey(ValueKey("News-feed-screen-title-text"));
+    Text mainScreenTitleWidget =
+        mainScreenTitleFinder.evaluate().single.widget as Text;
+    expect(mainScreenTitleWidget.data, "My Facebook");
+  });
 
-  //   //navigate to edit screen
-  //   Finder editButtonsBeforeNavigation = find.byKey(ValueKey("edit-icon"));
-  //   await tester.tap(editButtonsBeforeNavigation.first);
-  //   await tester.pumpAndSettle();
+  testWidgets("submitted new post should appear on news feed screen",
+      (WidgetTester tester) async {
+    await _pumpAppAndWait(tester);
 
-  //   // await Future.delayed(Duration(seconds: 5), () {});
+    //press create new post
+    Finder addNewFind = find.byKey(Key("whats-on-your-mind-text"));
+    await tester.tap(addNewFind);
+    await tester.pumpAndSettle();
 
-  //   //edit the post with NEWTEXT
-  //   final String editText = "NEW EDIT TEXT FROM INTEGRATION TEST";
-  //   await tester.enterText(find.byKey(Key("post-text-area")), editText);
+    //edit the post with NEWTEXT
+    final String newText =
+        "This is an automated test created on integration testing";
+    await tester.enterText(find.byKey(Key("post-text-area")), newText);
 
-  //   //try going back without submitting
-  //   Finder backFinder = find.byKey(ValueKey("back-button"));
-  //   await tester.tap(backFinder);
-  //   await tester.pumpAndSettle();
-  //   // await Future.delayed(Duration(seconds: 5), () {});
+    //go back without submitting
+    Finder backFinder = find.byKey(ValueKey("back-button"));
+    await tester.tap(backFinder);
+    await tester.pumpAndSettle();
 
-  //   //find alertdialog box and check error message
-  //   Finder dialogFinder = find.byKey(Key("go-back-alert-dialog"));
-  //   expect(dialogFinder, findsOneWidget);
+    // press no button on dialog
+    Finder noDialogButton = find.byKey(Key("no-button-on-dialog"));
+    await tester.tap(noDialogButton);
+    await tester.pumpAndSettle();
 
-  //   // press no button on dialog
-  //   Finder noDialogButton = find.byKey(Key("no-button-on-dialog"));
-  //   await tester.tap(noDialogButton);
-  //   await tester.pumpAndSettle();
+    //press submit button
+    Finder postSubmitButton = find.byKey(ValueKey("submit-button"));
+    await tester.tap(postSubmitButton);
+    await tester.pumpAndSettle();
 
-  //   //press submit button
-  //   Finder postSubmitButton = find.byKey(ValueKey("submit-button"));
-  //   await tester.tap(postSubmitButton);
-  //   await tester.pumpAndSettle();
+    //check navigation
+    Finder mainScreenTitleFinder =
+        find.byKey(ValueKey("News-feed-screen-title-text"));
+    Text mainScreenTitleWidget =
+        mainScreenTitleFinder.evaluate().single.widget as Text;
+    expect(mainScreenTitleWidget.data, "My Facebook");
 
-  //   //check navigation
-  //   Finder mainScreenTitleFinder =
-  //       find.byKey(ValueKey("News-feed-screen-title-text"));
-  //   Text mainScreenTitleWidget =
-  //       mainScreenTitleFinder.evaluate().single.widget as Text;
-  //   expect(mainScreenTitleWidget.data, "My Facebook");
-
-  //   // find the edited text
-  //   expect(find.text(editText), findsOneWidget);
-  // });
+    // find the edited text
+    expect(find.text(newText), findsOneWidget);
+  });
 }

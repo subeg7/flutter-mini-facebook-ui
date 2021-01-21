@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/all.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
+const delay = 2;
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -90,8 +92,6 @@ void main() {
     Finder mainScreenTitleFinder = find.byKey(Key("snackbar-text-message"));
     Text snackbarText = mainScreenTitleFinder.evaluate().single.widget as Text;
     expect(snackbarText.data, addValidationMessage);
-
-    
   });
 
   testWidgets("submitted new post should appear on news feed screen",
@@ -102,26 +102,34 @@ void main() {
     Finder addNewFind = find.byKey(Key("whats-on-your-mind-text"));
     await tester.tap(addNewFind);
     await tester.pumpAndSettle();
+    await Future.delayed(Duration(seconds: delay), () {});
 
     //type in the newText
     final String newText =
         "This is an automated test created on integration testing";
     await tester.enterText(find.byKey(Key("post-text-area")), newText);
+    await Future.delayed(Duration(seconds: delay), () {});
 
     //go back without submitting
     Finder backFinder = find.byKey(ValueKey("back-button"));
     await tester.tap(backFinder);
     await tester.pumpAndSettle();
 
+    await Future.delayed(Duration(seconds: delay), () {});
+
     // press no button on dialog
     Finder noDialogButton = find.byKey(Key("no-button-on-dialog"));
     await tester.tap(noDialogButton);
     await tester.pumpAndSettle();
 
+    await Future.delayed(Duration(seconds: delay), () {});
+
     //press submit button
     Finder postSubmitButton = find.byKey(ValueKey("submit-button"));
     await tester.tap(postSubmitButton);
     await tester.pumpAndSettle();
+
+    await Future.delayed(Duration(seconds: delay), () {});
 
     //check navigation
     Finder mainScreenTitleFinder =
@@ -132,5 +140,7 @@ void main() {
 
     // find the edited text
     expect(find.text(newText), findsOneWidget);
+
+    await Future.delayed(Duration(seconds: delay * 3), () {});
   });
 }

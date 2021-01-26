@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:facebook/screens/screens.dart';
 import 'package:facebook/sentry/sentry_config.dart';
+import 'package:facebook/src_bloc/presentation/features/news_feed/news_feed_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sentry/sentry.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: NewsFeedScreen(), // we begin with the NewsFeedScreen
+      home: BlocScreen(), // we begin with the NewsFeedScreen
     );
   }
 }

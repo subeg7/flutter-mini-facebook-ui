@@ -1,12 +1,16 @@
 import 'package:facebook/models/models.dart';
+import 'package:facebook/repositories/Repository.dart';
 import 'package:facebook/services/news_feed_service.dart';
 import 'package:flutter/material.dart';
 
 class NewsFeed with ChangeNotifier {
-  List<Post> posts = []; //this is rendered in newsFeedScreen
-  NewsFeedService service = new NewsFeedService(); //this simulates the api call
+  List<Post> _posts = []; //this is rendered in newsFeedScreen
+  Repository _repository = Repository(); //this simulates the api call
   bool isFetchingPage1 = true;
-  int currentPage = 1; //the current page of data fetched
+  int _currentPage = 1; //the current page of data fetched
+
+  int get currentPage => _currentPage;
+  List<Post> get posts => _posts;
 
   /*
    Here, the paginated data is fetched,
@@ -20,10 +24,10 @@ class NewsFeed with ChangeNotifier {
     dataCompleteCb,
   }) async {
     try {
-      List<Post> paginatedPosts = await service.fetchByPage(page);
-      posts = [...posts, ...paginatedPosts];
+      List<Post> paginatedPosts = await _repository.fetchByPage(page);
+      _posts = [...posts, ...paginatedPosts];
       if (page == 1) isFetchingPage1 = false;
-      currentPage = page;
+      _currentPage = page;
       notifyListeners();
       if (paginatedPosts.isEmpty)
         dataCompleteCb();

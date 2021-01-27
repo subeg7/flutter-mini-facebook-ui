@@ -8,6 +8,7 @@ class NewsFeedBloc extends Bloc<NewsFeedEvent, NewsFeedState> {
   NewsFeedBloc(NewsFeedState initialState) : super(initialState);
   final _repository = Repository();
   int _page = 1;
+  int get page => _page;
 
   void fetchNextPage() {
     add(FetchNextPage());

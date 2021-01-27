@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 
 @immutable
 abstract class NewsFeedState {
+  List<Post> posts;
+  int page;
+
+  NewsFeedState({this.posts, this.page = 0});
 }
 
 @immutable
@@ -18,12 +22,13 @@ class NewsFeedFetchLoadingState extends NewsFeedState {}
 @immutable
 class NewsFeedFetchSuccessState extends NewsFeedState {
   final List<Post> posts;
+  final int page;
+  final bool hasReachedMax;
 
-  NewsFeedFetchSuccessState(this.posts);
+  NewsFeedFetchSuccessState({this.posts, this.page, this.hasReachedMax});
 }
 
 @immutable
-class NewsFeedFetchInitailState extends NewsFeedState {
-  final List<Post> posts = [];
+class NewsFeedEmptyState extends NewsFeedState {
   final String message = "Press Fetch button below";
 }

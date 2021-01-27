@@ -1,14 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:facebook/repositories/Repository.dart';
 
+import '../../../../constants.dart';
 import 'news_feed_event.dart';
 import 'news_feed_state.dart';
 
 class NewsFeedBloc extends Bloc<NewsFeedEvent, NewsFeedState> {
   NewsFeedBloc(NewsFeedState initialState) : super(initialState);
   final _repository = Repository();
-  int _page = 1;
-  int get page => _page;
+  // int get page => _page;
 
   void fetchNextPage() {
     add(FetchNextPage());
@@ -16,10 +16,29 @@ class NewsFeedBloc extends Bloc<NewsFeedEvent, NewsFeedState> {
 
   @override
   Stream<NewsFeedState> mapEventToState(NewsFeedEvent event) async* {
+    final NewsFeedState currentState = state;
+    final int nextPage = currentState.page + 1;
+    final hasReachedMax = nextPage >= kPageLimit;
+
     if (event is FetchNextPage) {
-      yield NewsFeedFetchLoadingState();
-      final newPosts = await _repository.fetchByPage(++_page);
-      yield NewsFeedFetchSuccessState(newPosts);
+      if (nextPage != 1) {
+        final newPosts = await _repository.fetchByPage(nextPage);
+        // means fetch is done for pagination
+        yield NewsFeedFetchSuccessState(
+          posts: [...currentState.posts, ...newPosts],
+          page: nextPage,
+          hasReachedMax: hasReachedMax,
+        );
+      } else {
+        // means fetching page for the first time
+        yield NewsFeedFetchLoadingState();
+        final newPosts = await _repository.fetchByPage(nextPage);
+        yield NewsFeedFetchSuccessState(
+          posts: [...newPosts],
+          page: nextPage,
+          hasReachedMax: hasReachedMax,
+        );
+      }
     } else if (event is NewsFeedFetchSuccessState) {
     } else if (event is NewsFeedFetchErrorState) {
     } else
@@ -27,4 +46,4 @@ class NewsFeedBloc extends Bloc<NewsFeedEvent, NewsFeedState> {
   }
 }
 
-final NewsFeedBloc newsFeedBloc = NewsFeedBloc(NewsFeedFetchInitailState());
+final NewsFeedBloc newsFeedBloc = NewsFeedBloc(NewsFeedEmptyState());

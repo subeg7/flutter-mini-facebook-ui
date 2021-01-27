@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocProvider<NewsFeedBloc>(
         create: (context) => NewsFeedBloc(
-          NewsFeedFetchInitailState(),
+          NewsFeedEmptyState(),
         ),
         child: NewsFeedBlocScreen(),
       ),

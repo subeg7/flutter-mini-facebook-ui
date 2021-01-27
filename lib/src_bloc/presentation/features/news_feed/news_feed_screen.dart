@@ -21,7 +21,7 @@ class _BlocScreenState extends State<BlocScreen> {
         body: SafeArea(
       child: Container(
         child: BlocProvider<NewsFeedBloc>(
-          create: (context) => NewsFeedBloc(NewsFeedFetchInitailState()),
+          create: (context) => NewsFeedBloc(NewsFeedEmptyState()),
           child: PostsWrapper(),
         ),
       ),
@@ -42,7 +42,7 @@ class PostsWrapper extends StatelessWidget {
             child: BlocConsumer<NewsFeedBloc, NewsFeedState>(
               listener: (context, state) {},
               builder: (context, state) {
-                if (state is NewsFeedFetchInitailState)
+                if (state is NewsFeedEmptyState)
                   return Center(child: Text(state.message));
                 else if (state is NewsFeedFetchLoadingState)
                   return Center(child: CircularProgressIndicator());

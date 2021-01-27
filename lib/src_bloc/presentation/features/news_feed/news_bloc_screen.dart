@@ -32,20 +32,7 @@ class _NewsFeedBlocScreenState extends State<NewsFeedBlocScreen>
   /*
     Fetch more data on scroll
   */
-  void _onLoading() async {
-    final NewsFeedBloc bloc = BlocProvider.of<NewsFeedBloc>(context);
-
-    // final newsFeed = context.read(newsFeedProvider);
-    //  final newsFeed = ProviderReference().watch(newsFeedProvider);
-    // int nextPage = bloc.page + 1;
-    // await bloc.fetchNextPage();
-    // page: nextPage,
-    // successCb: () => _refreshController
-    //     .loadComplete(), //means this page data has been loaded, allowing to scroll more
-    // dataCompleteCb: () => _refreshController
-    //     .loadNoData(), //_onLoading() is not triggered even if scrolled down
-    // );
-  }
+  void _onPullDown() => BlocProvider.of<NewsFeedBloc>(context).fetchNextPage();
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +44,17 @@ class _NewsFeedBlocScreenState extends State<NewsFeedBlocScreen>
           builder: (context, state) {
             if (state is NewsFeedFetchLoadingState)
               return Center(child: CupertinoActivityIndicator());
-            else if (state is NewsFeedFetchSuccessState)
+            else if (state is NewsFeedFetchSuccessState) {
+              if (state.hasReachedMax) {
+                _refreshController.loadNoData();
+              } else {
+                _refreshController.loadComplete();
+              }
               return SmartRefresher(
                 enablePullUp: true,
                 enablePullDown: false,
                 controller: _refreshController,
-                onLoading: _onLoading,
+                onLoading: _onPullDown,
                 footer: ClassicFooter(
                   loadStyle: LoadStyle.ShowWhenLoading,
                   completeDuration: Duration(milliseconds: 500),
@@ -97,8 +89,9 @@ class _NewsFeedBlocScreenState extends State<NewsFeedBlocScreen>
                   ],
                 ),
               );
-            else
+            } else {
               return Center(child: Text("Unimplemented state"));
+            }
           },
         ),
       ),

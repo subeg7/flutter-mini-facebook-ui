@@ -32,15 +32,14 @@ class _NewsFeedBlocScreenState extends State<NewsFeedBlocScreen>
   /*
     Fetch more data on scroll
   */
-  void _onPullDown() => BlocProvider.of<NewsFeedBloc>(context).fetchNextPage();
+  void _onRefresh() => BlocProvider.of<NewsFeedBloc>(context).fetchNextPage();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       body: SafeArea(
-        child: BlocConsumer<NewsFeedBloc, NewsFeedState>(
-          listener: (context, state) {},
+        child: BlocBuilder<NewsFeedBloc, NewsFeedState>(
           builder: (context, state) {
             if (state is NewsFeedFetchLoadingState)
               return Center(child: CupertinoActivityIndicator());
@@ -54,7 +53,7 @@ class _NewsFeedBlocScreenState extends State<NewsFeedBlocScreen>
                 enablePullUp: true,
                 enablePullDown: false,
                 controller: _refreshController,
-                onLoading: _onPullDown,
+                onLoading: _onRefresh,
                 footer: ClassicFooter(
                   loadStyle: LoadStyle.ShowWhenLoading,
                   completeDuration: Duration(milliseconds: 500),

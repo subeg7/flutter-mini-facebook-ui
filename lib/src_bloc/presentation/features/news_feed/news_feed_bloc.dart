@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:facebook/models/post_model.dart';
 import 'package:facebook/repositories/Repository.dart';
 
 import '../../../../constants.dart';
@@ -8,10 +9,13 @@ import 'news_feed_state.dart';
 class NewsFeedBloc extends Bloc<NewsFeedEvent, NewsFeedState> {
   NewsFeedBloc(NewsFeedState initialState) : super(initialState);
   final _repository = Repository();
-  // int get page => _page;
 
   void fetchNextPage() {
     add(FetchNextPage());
+  }
+
+  void addPost(Post post) {
+    // dispatch addverified post event;
   }
 
   @override

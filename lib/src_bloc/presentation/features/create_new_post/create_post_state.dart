@@ -16,17 +16,17 @@ class CreatePostValidationState extends CreatePostState {
   CreatePostValidationState({this.errorMessage, this.post, this.isValid});
 }
 
-class SubmitNewPostSuccessState extends CreatePostState {
+class SubmitedNewPostSuccessState extends CreatePostState {
   final Post post;
 
-  SubmitNewPostSuccessState(this.post);
+  SubmitedNewPostSuccessState(this.post);
 }
 
-class SubmitNewPostErrorState extends CreatePostState {
+class SubmitedNewPostErrorState extends CreatePostState {
   final Post post;
   final Exception error;
 
-  SubmitNewPostErrorState(this.post, this.error);
+  SubmitedNewPostErrorState(this.post, this.error);
 }
 
 class CreatePostInititalState extends CreatePostState {}

@@ -14,4 +14,10 @@ class VerifyNewPostEvent extends CreatePostEvent {
 class SubmitVerifiedNewPost extends CreatePostEvent {
   final Post post;
   SubmitVerifiedNewPost({this.post});
-} 
+}
+
+class DispatchCreatePostSubmitSuccessEvent extends CreatePostEvent {
+  final Post post;
+
+  DispatchCreatePostSubmitSuccessEvent(this.post);
+}

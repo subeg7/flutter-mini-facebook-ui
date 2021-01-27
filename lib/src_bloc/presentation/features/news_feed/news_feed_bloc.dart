@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:facebook/models/post_model.dart';
 import 'package:facebook/repositories/Repository.dart';
+import 'package:facebook/src_bloc/presentation/features/create_new_post/create_post_bloc.dart';
+import 'package:facebook/src_bloc/presentation/features/create_new_post/create_post_event.dart';
 
 import '../../../../constants.dart';
 import 'news_feed_event.dart';
@@ -15,7 +17,7 @@ class NewsFeedBloc extends Bloc<NewsFeedEvent, NewsFeedState> {
   }
 
   void addPost(Post post) {
-    // dispatch addverified post event;
+    add(AddVerifiedPost(post));
   }
 
   @override
@@ -28,7 +30,7 @@ class NewsFeedBloc extends Bloc<NewsFeedEvent, NewsFeedState> {
       if (nextPage != 1) {
         final newPosts = await _repository.fetchByPage(nextPage);
         // means fetch is done for pagination
-        yield NewsFeedFetchSuccessState(
+        yield NewsFeedUpdateSuccessState(
           posts: [...currentState.posts, ...newPosts],
           page: nextPage,
           hasReachedMax: hasReachedMax,
@@ -37,14 +39,21 @@ class NewsFeedBloc extends Bloc<NewsFeedEvent, NewsFeedState> {
         // means fetching page for the first time
         yield NewsFeedFetchLoadingState();
         final newPosts = await _repository.fetchByPage(nextPage);
-        yield NewsFeedFetchSuccessState(
+        yield NewsFeedUpdateSuccessState(
           posts: [...newPosts],
           page: nextPage,
           hasReachedMax: hasReachedMax,
         );
       }
-    } else if (event is NewsFeedFetchSuccessState) {
-    } else if (event is NewsFeedFetchErrorState) {
+    } else if (event is AddVerifiedPost) {
+      List<Post> allPosts = currentState.posts;
+      allPosts.insert(0, event.post);
+      yield NewsFeedUpdateSuccessState(
+        posts: allPosts,
+        page: nextPage,
+        hasReachedMax: state.hasReachedMax,
+      );
+      createPostBloc.add(DispatchCreatePostSubmitSuccessEvent(event.post));
     } else
       throw UnimplementedError();
   }

@@ -63,8 +63,9 @@ class AddNewWidget extends StatelessWidget {
     Navigator.push(
       context,
       SlideRoute(
-        page: BlocProvider<CreatePostBloc>(
-          create: (context) => createPostBloc,
+        // page: CreatePostBlocScreen(),
+        page: BlocProvider<CreatePostBloc>.value(
+          value: createPostBloc,
           child: CreatePostBlocScreen(),
         ),
       ),

@@ -54,15 +54,16 @@ class _CreatePostBlocScreenState extends State<CreatePostBlocScreen> {
               listener: (context, state) {
                 if (state is CreatePostValidationState && state.isValid) {
                   //TODO :: discuss this should be at the bloc or here ??
-                  BlocProvider.of<CreatePostBloc>(context)
-                      .add(SubmitVerifiedNewPost(post: state.post));
+                  BlocProvider.of<CreatePostBloc>(context).add(
+                    SubmitVerifiedNewPost(post: state.post),
+                  );
                 } else if (state is CreatePostValidationState &&
                     !state.isValid) {
                   displayMessage(state.errorMessage, context);
-                } else if (state is SubmitNewPostSuccessState) {
+                } else if (state is SubmitedNewPostSuccessState) {
                   //navigate to the news feed screen
-                  // Navigator.pop(context);
-                } else if (state is SubmitNewPostErrorState) {
+                  Navigator.pop(context);
+                } else if (state is SubmitedNewPostErrorState) {
                   displayMessage(state.error.toString(), context);
                 }
               },
@@ -95,15 +96,12 @@ class _CreatePostBlocScreenState extends State<CreatePostBlocScreen> {
                             mode: widget.mode,
                             image: loggedInUser.profileImage,
                             title: loggedInUser.name,
-                            onSumbit: () =>
-                                BlocProvider.of<CreatePostBloc>(context).add(
-                              VerifyNewPostEvent(
-                                post: Post.fromData(
-                                  textController.text,
-                                  postImages,
-                                ),
-                              ),
-                            ),
+                            onSumbit: () {
+                              Post post = Post.fromData(
+                                  textController.text, postImages);
+                              BlocProvider.of<CreatePostBloc>(context)
+                                  .add(VerifyNewPostEvent(post: post));
+                            },
                           ),
                           SizedBox(height: 10),
                           PostTextArea(controller: textController),
@@ -129,5 +127,10 @@ class _CreatePostBlocScreenState extends State<CreatePostBlocScreen> {
     setState(() {
       postImages = [...postImages, ...imgs];
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

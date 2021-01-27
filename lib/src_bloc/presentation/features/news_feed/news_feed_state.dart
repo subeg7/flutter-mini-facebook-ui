@@ -1,12 +1,17 @@
-import 'package:facebook/models/post_model.dart';
 import 'package:flutter/material.dart';
+
+import 'package:facebook/models/post_model.dart';
 
 @immutable
 abstract class NewsFeedState {
-  List<Post> posts;
+  List<Post> posts = [];
   int page;
-
-  NewsFeedState({this.posts, this.page = 0});
+  bool hasReachedMax;
+  NewsFeedState({
+    this.posts,
+    this.page = 0,
+    this.hasReachedMax = false,
+  });
 }
 
 @immutable
@@ -20,12 +25,12 @@ class NewsFeedFetchErrorState extends NewsFeedState {
 class NewsFeedFetchLoadingState extends NewsFeedState {}
 
 @immutable
-class NewsFeedFetchSuccessState extends NewsFeedState {
+class NewsFeedUpdateSuccessState extends NewsFeedState {
   final List<Post> posts;
   final int page;
   final bool hasReachedMax;
 
-  NewsFeedFetchSuccessState({this.posts, this.page, this.hasReachedMax});
+  NewsFeedUpdateSuccessState({this.posts, this.page, this.hasReachedMax});
 }
 
 @immutable

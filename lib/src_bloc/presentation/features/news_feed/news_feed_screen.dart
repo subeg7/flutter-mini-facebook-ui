@@ -46,7 +46,7 @@ class PostsWrapper extends StatelessWidget {
                   return Center(child: Text(state.message));
                 else if (state is NewsFeedFetchLoadingState)
                   return Center(child: CircularProgressIndicator());
-                else if (state is NewsFeedFetchSuccessState)
+                else if (state is NewsFeedUpdateSuccessState)
                   return Center(child: Text("Data has been loaded"));
                 // else
                 return Center(child: Text("Unimplemented state"));

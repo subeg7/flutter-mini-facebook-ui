@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:facebook/models/post_model.dart';
-import 'package:facebook/repositories/Repository.dart';
 import 'package:facebook/src_bloc/presentation/features/create_new_post/create_post_event.dart';
 import 'package:facebook/src_bloc/presentation/features/create_new_post/create_post_state.dart';
 import 'package:facebook/src_bloc/presentation/features/news_feed/news_feed_bloc.dart';
@@ -16,7 +17,10 @@ class CreatePostBloc extends Bloc<CreatePostEvent, CreatePostState> {
     if (event is VerifyNewPostEvent) {
       final bool isValid = _isNewPostValid(event.post);
       if (isValid) {
-        yield CreatePostValidationState(isValid: true, post: state.post);
+        yield CreatePostValidationState(
+          isValid: true,
+          post: event.post,
+        );
       } else {
         yield CreatePostValidationState(
           errorMessage: addValidationMessage,
@@ -26,11 +30,10 @@ class CreatePostBloc extends Bloc<CreatePostEvent, CreatePostState> {
       }
     } else if (event is SubmitVerifiedNewPost) {
       newsFeedBloc.addPost(event.post);
-      // newsFeedBloc.listen((NewsFeedState newsFeedState)  {
-      //   if(newsFeedState is )
-      // });
-    }
-    throw UnimplementedError();
+    } else if (event is DispatchCreatePostSubmitSuccessEvent) {
+      yield SubmitedNewPostSuccessState(event.post);
+    } else
+      throw UnimplementedError();
   }
 
 /*

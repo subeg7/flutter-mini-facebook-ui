@@ -49,8 +49,8 @@ class MyApp extends StatelessWidget {
       ),
       home: MultiBlocProvider(
         providers: [
-          BlocProvider<NewsFeedBloc>(create: (context) => newsFeedBloc),
-          BlocProvider<CreatePostBloc>(create: (context) => createPostBloc),
+          BlocProvider<NewsFeedBloc>.value(value: newsFeedBloc),
+          // BlocProvider<CreatePostBloc>.value(value: createPostBloc),
         ],
         child: NewsFeedBlocScreen(),
       ),

@@ -20,6 +20,11 @@ class NewsFeedBloc extends Bloc<NewsFeedEvent, NewsFeedState> {
     add(AddVerifiedPost(post));
   }
 
+  void replacePost(Post post) {
+    print("here");
+    //todo replace logic
+  }
+
   @override
   Stream<NewsFeedState> mapEventToState(NewsFeedEvent event) async* {
     final NewsFeedState currentState = state;

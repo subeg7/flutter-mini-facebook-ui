@@ -1,5 +1,5 @@
 import 'package:facebook/models/post_model.dart';
-import 'package:facebook/src_bloc/presentation/features/post/common/post_validation_state.dart';
+import 'package:facebook/src_bloc/presentation/features/post/common/post_common.dart';
 import 'package:flutter/material.dart';
 
 @immutable

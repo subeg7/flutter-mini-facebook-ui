@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:facebook/models/post_model.dart';
 import 'package:facebook/src_bloc/presentation/features/news_feed/news_feed_bloc.dart';
-import 'package:facebook/src_bloc/presentation/features/post/common/post_validation_state.dart';
+import 'package:facebook/src_bloc/presentation/features/post/common/post_common.dart';
 
 import '../../../../../constants.dart';
 import 'create_post_event.dart';

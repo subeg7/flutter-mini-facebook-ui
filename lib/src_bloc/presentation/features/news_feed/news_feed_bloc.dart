@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:facebook/models/post_model.dart';
 import 'package:facebook/repositories/Repository.dart';
-import 'package:facebook/src_bloc/presentation/features/create_new_post/create_post_bloc.dart';
-import 'package:facebook/src_bloc/presentation/features/create_new_post/create_post_event.dart';
+import 'package:facebook/src_bloc/presentation/features/post/create_new_post/create_post_bloc.dart';
+import 'package:facebook/src_bloc/presentation/features/post/create_new_post/create_post_event.dart';
 
 import '../../../../constants.dart';
 import 'news_feed_event.dart';

@@ -1,6 +1,6 @@
 import 'package:facebook/models/post_model.dart';
+import 'package:facebook/src_bloc/presentation/features/post/common/post_validation_state.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
 
 @immutable
 abstract class CreatePostState {
@@ -9,11 +9,9 @@ abstract class CreatePostState {
 
 @immutable
 class CreatePostValidationState extends CreatePostState {
-  final String errorMessage;
-  final Post post;
-  final bool isValid;
+  final PostValidation validation;
 
-  CreatePostValidationState({this.errorMessage, this.post, this.isValid});
+  CreatePostValidationState(this.validation);
 }
 
 class SubmitedNewPostSuccessState extends CreatePostState {

@@ -52,14 +52,15 @@ class _CreatePostBlocScreenState extends State<CreatePostBlocScreen> {
           child: SafeArea(
             child: BlocListener<CreatePostBloc, CreatePostState>(
               listener: (context, state) {
-                if (state is CreatePostValidationState && state.isValid) {
+                if (state is CreatePostValidationState &&
+                    state.validation.isValid) {
                   //TODO :: discuss this should be at the bloc or here ??
                   BlocProvider.of<CreatePostBloc>(context).add(
-                    SubmitVerifiedNewPost(post: state.post),
+                    SubmitVerifiedNewPost(post: state.validation.post),
                   );
                 } else if (state is CreatePostValidationState &&
-                    !state.isValid) {
-                  displayMessage(state.errorMessage, context);
+                    !state.validation.isValid) {
+                  displayMessage(state.validation.errorMessage, context);
                 } else if (state is SubmitedNewPostSuccessState) {
                   //navigate to the news feed screen
                   Navigator.pop(context);

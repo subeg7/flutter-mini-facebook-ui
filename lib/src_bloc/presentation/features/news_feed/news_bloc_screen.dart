@@ -43,7 +43,7 @@ class _NewsFeedBlocScreenState extends State<NewsFeedBlocScreen>
           builder: (context, state) {
             if (state is NewsFeedFetchLoadingState)
               return Center(child: CupertinoActivityIndicator());
-            else if (state is NewsFeedUpdateSuccessState) {
+          else if (state is NewsFeedUpdateSuccessState) {
               if (state.hasReachedMax) {
                 _refreshController.loadNoData();
               } else {

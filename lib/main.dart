@@ -1,14 +1,8 @@
 import 'dart:async';
 
-import 'package:facebook/screens/screens.dart';
 import 'package:facebook/sentry/sentry_config.dart';
-import 'package:facebook/src_bloc/presentation/features/create_new_post/create_post_bloc.dart';
-import 'package:facebook/src_bloc/presentation/features/create_new_post/create_post_screen.dart';
-import 'package:facebook/src_bloc/presentation/features/create_new_post/create_post_state.dart';
 import 'package:facebook/src_bloc/presentation/features/news_feed/news_bloc_screen.dart';
 import 'package:facebook/src_bloc/presentation/features/news_feed/news_feed_bloc.dart';
-import 'package:facebook/src_bloc/presentation/features/news_feed/news_feed_screen.dart';
-import 'package:facebook/src_bloc/presentation/features/news_feed/news_feed_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

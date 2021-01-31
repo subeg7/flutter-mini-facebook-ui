@@ -40,7 +40,10 @@ class PostsWrapper extends StatelessWidget {
             // height: MediaQuery.of(context).size.height,
             // width: double.infinity,
             child: BlocConsumer<NewsFeedBloc, NewsFeedState>(
-              listener: (context, state) {},
+              listener: (context, state) {
+                //listener doesn't build anything
+                // good for navigations and snackbar
+              },
               builder: (context, state) {
                 if (state is NewsFeedEmptyState)
                   return Center(child: Text(state.message));

@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:facebook/models/post_model.dart';
-import 'package:facebook/src_bloc/presentation/features/create_new_post/create_post_event.dart';
-import 'package:facebook/src_bloc/presentation/features/create_new_post/create_post_state.dart';
 import 'package:facebook/src_bloc/presentation/features/news_feed/news_feed_bloc.dart';
-import 'package:facebook/src_bloc/presentation/features/news_feed/news_feed_state.dart';
+import 'package:facebook/src_bloc/presentation/features/post/common/post_validation_state.dart';
 
-import '../../../../constants.dart';
+import '../../../../../constants.dart';
+import 'create_post_event.dart';
+import 'create_post_state.dart';
 
 class CreatePostBloc extends Bloc<CreatePostEvent, CreatePostState> {
   CreatePostBloc(CreatePostState initialState) : super(initialState);
@@ -16,18 +16,14 @@ class CreatePostBloc extends Bloc<CreatePostEvent, CreatePostState> {
   Stream<CreatePostState> mapEventToState(CreatePostEvent event) async* {
     if (event is VerifyNewPostEvent) {
       final bool isValid = _isNewPostValid(event.post);
+      PostValidation validation;
       if (isValid) {
-        yield CreatePostValidationState(
-          isValid: true,
-          post: event.post,
-        );
+        validation = PostValidation(event.post, true);
       } else {
-        yield CreatePostValidationState(
-          errorMessage: addValidationMessage,
-          isValid: false,
-          post: state.post,
-        );
+        validation = PostValidation(event.post, false,
+            errorMessage: addValidationMessage);
       }
+      yield CreatePostValidationState(validation);
     } else if (event is SubmitVerifiedNewPost) {
       newsFeedBloc.addPost(event.post);
     } else if (event is DispatchCreatePostSubmitSuccessEvent) {

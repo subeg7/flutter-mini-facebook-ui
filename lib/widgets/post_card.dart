@@ -2,8 +2,11 @@ import 'package:facebook/constants.dart';
 import 'package:facebook/models/post_model.dart';
 import 'package:facebook/routes/scale_route.dart';
 import 'package:facebook/screens/screens.dart';
+import 'package:facebook/src_bloc/presentation/features/post/edit_post/edit_post_bloc.dart';
+import 'package:facebook/src_bloc/presentation/features/post/edit_post/edit_post_screen.dart';
 import 'package:facebook/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PostCard extends StatelessWidget {
   final Post post;
@@ -49,10 +52,12 @@ class PostCard extends StatelessWidget {
     Navigator.push(
       context,
       ScaleRoute(
-        page: AddOrEditScreen(
-          post: post,
-          index: index,
-          mode: ScreenMode.EDIT,
+        page: BlocProvider<EditPostBloc>.value(
+          value: editPostBloc,
+          child: EditPostBlocScreen(
+            post: post,
+            index: index,
+          ),
         ),
       ),
     );

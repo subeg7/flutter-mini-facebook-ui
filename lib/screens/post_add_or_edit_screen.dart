@@ -41,11 +41,12 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
       body: Builder(
         builder: (context) => WillPopScope(
           onWillPop: () async {
-            Post editingPost = Post.fromData(textController.text, postImages);
-            if (!isPostEdited(editingPost, widget.post))
-              return true; //if post has not been changed then allow to pop
-            else
-              return await showPopDialog(context) ?? false;
+            return true;
+            // Post editingPost = Post.fromData(textController.text, postImages);
+            // if (!isPostEdited(editingPost, widget.post))
+            //   return true; //if post has not been changed then allow to pop
+            // else
+            //   return await showPopDialog(context) ?? false;
           },
           child: SafeArea(
             child: CustomScrollView(
@@ -55,6 +56,21 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
                   title: Text(
                     kScreenModeTitleMap[widget.mode.toString()].toUpperCase() +
                         " post".toUpperCase(),
+                    key: ValueKey("Post-add-or-edit-screen-title-text"),
+                  ),
+                  leading: IconButton(
+                    key: ValueKey("back-button"),
+                    icon: Icon(Icons.chevron_left_sharp),
+                    onPressed: () async {
+                      Post editingPost =
+                          Post.fromData(textController.text, postImages);
+                      if (!isPostEdited(editingPost, widget.post))
+                        //if post has not been changed then allow to pop
+                        Navigator.pop(context);
+                      else if (await showPopDialog(context))
+                        //if user press 'okay lets go back' then pop
+                        Navigator.pop(context);
+                    },
                   ),
                   pinned: true,
                 ),
@@ -103,25 +119,23 @@ class _AddOrEditScreenState extends State<AddOrEditScreen> {
   _handleImages(imgs) {
     if (!mounted) return;
     setState(() {
-      setState(() {
-        postImages = [...postImages, ...imgs];
-      });
+      postImages = [...postImages, ...imgs];
     });
   }
 
-  _generateException()async {
+  _generateException() async {
     throw Exception("UnHandled Error");
-}
+  }
 
   _handleSubmit(BuildContext context) {
-    _generateException();
-    // submitByScreenMode(
-    //   textController.text,
-    //   postImages,
-    //   context,
-    //   widget.index,
-    //   widget.mode,
-    //   widget.post,
-    // );
+    // _generateException();
+    submitByScreenMode(
+      textController.text,
+      postImages,
+      context,
+      widget.index,
+      widget.mode,
+      widget.post,
+    );
   }
 }

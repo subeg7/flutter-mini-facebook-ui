@@ -1,11 +1,10 @@
-import 'package:facebook/constants.dart';
 import 'package:facebook/main.dart';
-import 'package:facebook/models/models.dart';
-import 'package:facebook/routes/scale_route.dart';
 import 'package:facebook/routes/slide_route.dart';
-import 'package:facebook/screens/screens.dart';
+import 'package:facebook/src_bloc/presentation/features/post/create_new_post/create_post_bloc.dart';
+import 'package:facebook/src_bloc/presentation/features/post/create_new_post/create_post_screen.dart';
 import 'package:facebook/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddNewWidget extends StatelessWidget {
   final String profileImage;
@@ -18,6 +17,8 @@ class AddNewWidget extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
       child: InkWell(
         onTap: () {
+          // final bloc = BlocProvider.of<CreatePostBloc>(context);
+          // print("working");
           _handleOnCardTap(context);
         },
         child: Card(
@@ -44,6 +45,7 @@ class AddNewWidget extends StatelessWidget {
                     ),
                     child: Text(
                       "What's on your mind ? ",
+                      key: Key("whats-on-your-mind-text"),
                       style: AppTextStyle.subTitle(context),
                     ),
                   ),
@@ -61,9 +63,10 @@ class AddNewWidget extends StatelessWidget {
     Navigator.push(
       context,
       SlideRoute(
-        page: AddOrEditScreen(
-          post: Post(),
-          mode: ScreenMode.ADD,
+        // page: CreatePostBlocScreen(),
+        page: BlocProvider<CreatePostBloc>.value(
+          value: createPostBloc,
+          child: CreatePostBlocScreen(),
         ),
       ),
     );

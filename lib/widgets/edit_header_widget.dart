@@ -41,6 +41,7 @@ class EditHeader extends StatelessWidget {
           SizedBox(width: 5),
           Card(
             child: FlatButton.icon(
+                key: ValueKey("submit-button"),
                 label: Text(
                   kSubmitButtonTitle[mode.toString()],
                 ),

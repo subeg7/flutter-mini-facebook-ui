@@ -9,6 +9,7 @@ class PostTextArea extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: TextField(
+        key: Key("post-text-area"),
         controller: controller,
         keyboardType: TextInputType.multiline,
         maxLines: null,

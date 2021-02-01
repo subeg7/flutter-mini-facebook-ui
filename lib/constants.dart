@@ -29,10 +29,14 @@ final kSubmitIconData = {
   "ScreenMode.EDIT": Icons.edit,
 };
 
+const String addValidationMessage =
+    "Please write something or atleast a image to post";
+const String editValidationMessage =
+    "Change something first, then it will be reflected on news feed";
+
 final kValidationMessage = {
-  "ScreenMode.ADD": "Please write something or atleast a image to post",
-  "ScreenMode.EDIT":
-      "Change something first, then it will be reflected on news feed"
+  "ScreenMode.ADD": addValidationMessage,
+  "ScreenMode.EDIT": editValidationMessage,
 };
 
 const String dialogBoxTitle = "Go back ? ";

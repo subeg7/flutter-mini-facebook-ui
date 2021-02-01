@@ -12,6 +12,6 @@ class NewsFeedService {
       initalPostsJson.length,
       (index) => Post.fromJson(initalPostsJson[index]),
     );
-    return [...posts, ...posts];
+    return [...posts];
   }
 }

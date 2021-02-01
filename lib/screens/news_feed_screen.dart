@@ -7,7 +7,6 @@ import 'package:after_layout/after_layout.dart';
 import 'package:flutter_riverpod/all.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-
 class NewsFeedScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _NewsFeedScreenState();
@@ -36,7 +35,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
     Fetch more data on scroll
   */
   void _onLoading() async {
-    final newsFeed = context.read(newsFeedProvider);  
+    final newsFeed = context.read(newsFeedProvider);
     //  final newsFeed = ProviderReference().watch(newsFeedProvider);
     int nextPage = newsFeed.currentPage + 1;
     await newsFeed.fetchPost(
@@ -73,7 +72,8 @@ class _NewsFeedScreenState extends State<NewsFeedScreen>
                         slivers: [
                           SliverAppBar(
                             centerTitle: true,
-                            title: Text("My Facebook"),
+                            title: Text("My Facebook",
+                                key: Key("News-feed-screen-title-text")),
                             pinned: true,
                           ),
                           SliverToBoxAdapter(

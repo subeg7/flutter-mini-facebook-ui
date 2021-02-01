@@ -15,35 +15,31 @@ class EditPostBloc extends Bloc<EditPostEvent, EditPostState> {
   @override
   Stream<EditPostState> mapEventToState(EditPostEvent event) async* {
     if (event is VerifyEditPostEvent) {
-      final bool isValid = _editedPostValid(event.post);
+      final bool isValid = _isPostEdited(event.newPost, event.originalPost);
       PostValidation validation;
       if (isValid) {
-        validation = PostValidation(event.post, true);
+        validation = PostValidation(event.newPost, true);
       } else {
-        validation = PostValidation(event.post, false,
+        validation = PostValidation(event.newPost, false,
             errorMessage: editValidationMessage);
       }
       yield EditPostValidationState(validation, event.postIndex);
     } else if (event is SubmitVerifiedEditedPost) {
-      newsFeedBloc.replacePost(event.post);
-    }
-    // else if (event is DispatchCreatePostSubmitSuccessEvent) {
-    //   yield SubmitedNewPostSuccessState(event.post);
-    // }
-    else
+      newsFeedBloc.addReplacePostEvent(event.post, event.postIndex);
+    } else if (event is DispatchEditPostSubmitSuccessEvent) {
+      yield SubmitedEditedPostSuccessState(event.post, event.postIndex);
+    } else
       throw UnimplementedError();
   }
 
 /*
-  New data validator function
+  Edited data validator function
 */
-  bool _editedPostValid(Post post) {
-    return false;
-    //TODO :: implement edit post logic later
-    // if (post.caption == null && post.appImages.isEmpty)
-    //   return false;
-    // else
-    //   return true;
+  bool _isPostEdited(Post newPost, Post originalPost) {
+    if (newPost == originalPost) // '==' operator is overloaded in  Post model
+      return false;
+    else
+      return true;
   }
 }
 

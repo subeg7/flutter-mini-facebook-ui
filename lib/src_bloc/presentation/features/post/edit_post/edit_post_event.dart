@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 abstract class EditPostEvent {}
 
 class VerifyEditPostEvent extends EditPostEvent {
-  final Post post;
+  final Post newPost;
+  final Post originalPost;
   final int postIndex;
 
-  VerifyEditPostEvent({this.postIndex, this.post});
+  VerifyEditPostEvent({this.newPost, this.originalPost, this.postIndex});
 }
 
 class SubmitVerifiedEditedPost extends EditPostEvent {
@@ -16,4 +17,11 @@ class SubmitVerifiedEditedPost extends EditPostEvent {
   final int postIndex;
 
   SubmitVerifiedEditedPost({this.postIndex, this.post});
+}
+
+class DispatchEditPostSubmitSuccessEvent extends EditPostEvent {
+  final Post post;
+  final int postIndex;
+
+  DispatchEditPostSubmitSuccessEvent(this.post, this.postIndex);
 }

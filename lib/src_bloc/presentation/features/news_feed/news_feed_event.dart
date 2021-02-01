@@ -12,3 +12,10 @@ class AddVerifiedPost extends NewsFeedEvent {
   final Post post;
   AddVerifiedPost(this.post);
 }
+
+class EditPostByIndex extends NewsFeedEvent {
+  final Post post;
+  final int postIndex;
+
+  EditPostByIndex(this.post, this.postIndex);
+}
